@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_setting"
+        android:title="Setting"/>
+    <item
+        android:id="@+id/menu_theme"
+        android:title="Theme">
+        <menu>
+            <item
+                android:id="@+id/menu_theme_dark"
+                android:title="Dark theme"/>
+            <item
+                android:id="@+id/menu_theme_light"
+                android:title="Light theme"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_info"
+        android:title="About me"/>
+</menu>
