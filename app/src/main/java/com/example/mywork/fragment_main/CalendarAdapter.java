@@ -9,6 +9,8 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     ArrayList<DateFormat> daysOfMonth;
     Context context;
     FragmentCalendar fragmentCalendar = new FragmentCalendar();
+
+    boolean isOnClick = false;
+    int _position;
 
     public CalendarAdapter(ArrayList<DateFormat> daysOfMonth, Context context) {
         this.daysOfMonth = daysOfMonth;
@@ -58,6 +63,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         } else {
             holder.dayOfMonth.setText(daysOfMonth.get(position).getDate());
         }
+        if(isOnClick) {
+            if(_position == position) {
+            holder.dayOfMonth.setBackgroundColor(R.color.teal_200);
+            } else {
+                holder.dayOfMonth.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
     }
 
     @Override
@@ -72,8 +84,25 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             dayOfMonth = itemView.findViewById(R.id.tvCellDay);
 
             itemView.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View v) {
+                    if(daysOfMonth.get(getPosition()).toString().equals("null/null")) {
+
+                    } else {
+                        isOnClick = true;
+                        _position = getPosition();
+                        notifyDataSetChanged();
+                        ViewHolder holder = CalendarAdapter.ViewHolder.this;
+                        onBindViewHolder(holder, _position);
+                        Toast.makeText(context, daysOfMonth.get(getPosition()).toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
 
                     if(daysOfMonth.get(getPosition()).toString().equals("null/null")) {
 
@@ -102,8 +131,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                             tvStatisticCalendar.setText("Finish: " + finish + " / Unfinish: " + unfinish);
                         }
                         dialog.show();
-                        Toast.makeText(context, daysOfMonth.get(getPosition()).toString(), Toast.LENGTH_SHORT).show();
                     }
+                    return true;
                 }
             });
         }
