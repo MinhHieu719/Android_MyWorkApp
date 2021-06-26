@@ -112,6 +112,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         TextView tvStatisticCalendar = dialog.findViewById(R.id.tvStatisticCalendar);
+                        TextView tvChoose = dialog.findViewById(R.id.tvChoose);
+
+                        tvChoose.setText(daysOfMonth.get(getPosition()).toString());
+
                         int total = 0, finish = 0, unfinish = 0;
                         Database database = new Database(context, "work.DB", null, 1);
                         Cursor dataWork = database.getdata("SELECT * FROM work");
