@@ -11,32 +11,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.mywork.Database;
+import com.example.mywork.MainActivity;
 import com.example.mywork.Model.DateFormat;
 import com.example.mywork.R;
+import com.example.mywork.fragment_main.fragment_mywork.FragmentMwToDoList;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
-
     ArrayList<DateFormat> daysOfMonth;
     Context context;
-    FragmentCalendar fragmentCalendar = new FragmentCalendar();
 
-    boolean isOnClick = false;
+    FragmentMwToDoList fragmentMwToDoList;
+    FragmentCalendar fragmentCalendar = new FragmentCalendar();
+    public static String monthyeartv = "";
+
+    public static boolean isOnClick = false;
     int _position;
 
     public CalendarAdapter(ArrayList<DateFormat> daysOfMonth, Context context) {
         this.daysOfMonth = daysOfMonth;
         this.context = context;
+    }
+
+    public CalendarAdapter(FragmentMwToDoList fragmentMwToDoList) {
+        this.fragmentMwToDoList = fragmentMwToDoList;
     }
 
     @NonNull
@@ -53,7 +64,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull CalendarAdapter.ViewHolder holder, int position) {
-
         String today;
         today = fragmentCalendar.dateMontnYearFromDate(LocalDate.now());
         if(today.equals(daysOfMonth.get(position).toString())) {
@@ -95,7 +105,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                         notifyDataSetChanged();
                         ViewHolder holder = CalendarAdapter.ViewHolder.this;
                         onBindViewHolder(holder, _position);
-                        Toast.makeText(context, daysOfMonth.get(getPosition()).toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -107,12 +116,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     if(daysOfMonth.get(getPosition()).toString().equals("null/null")) {
 
                     } else {
+                        isOnClick = true;
                         Dialog dialog = new Dialog(context);
                         dialog.setContentView(R.layout.dialog_calendar_show);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         TextView tvStatisticCalendar = dialog.findViewById(R.id.tvStatisticCalendar);
                         TextView tvChoose = dialog.findViewById(R.id.tvChoose);
+                        Button btnDetailShow = dialog.findViewById(R.id.btnDetailShow);
 
                         tvChoose.setText(daysOfMonth.get(getPosition()).toString());
 
@@ -134,6 +145,18 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                         } else {
                             tvStatisticCalendar.setText("Finish: " + finish + " / Unfinish: " + unfinish);
                         }
+
+                        btnDetailShow.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                monthyeartv = daysOfMonth.get(getPosition()).toString();
+                                if(context instanceof MainActivity) {
+                                    dialog.dismiss();
+                                    ((MainActivity) context).vpMain.setCurrentItem(0);
+                                }
+                            }
+                        });
+
                         dialog.show();
                     }
                     return true;
@@ -141,37 +164,4 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             });
         }
     }
-
-//    private final ArrayList<String> daysOfMonth;
-//    private final OnItemListener onItemListener;
-//
-//    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
-//        this.daysOfMonth = daysOfMonth;
-//        this.onItemListener = onItemListener;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//        View view = inflater.inflate(R.layout.calendar_cell, parent, false);
-//        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-//        layoutParams.height = (int) (parent.getHeight() * 0.166666666);
-//
-//        return new CalendarViewHolder(view, onItemListener);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-//        holder.dayOfMonth.setText(daysOfMonth.get(position));
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return daysOfMonth.size();
-//    }
-//
-//    public interface OnItemListener {
-//        void onItemClick(int position, String dayText);
-//    }
 }

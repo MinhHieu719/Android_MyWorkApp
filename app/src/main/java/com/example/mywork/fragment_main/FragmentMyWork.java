@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.mywork.R;
 import com.example.mywork.fragment_main.fragment_mywork.ViewPagerMyworkAdapter;
@@ -91,9 +93,5 @@ public class FragmentMyWork extends Fragment {
         for (Fragment fragment : getChildFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    public void toTodolit() {
-        tlMywork.getTabAt(0).select();
     }
 }

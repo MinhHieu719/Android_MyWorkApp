@@ -13,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
@@ -40,6 +42,7 @@ import com.example.mywork.Model.Work;
 import com.example.mywork.Model.WorkAdapter;
 import com.example.mywork.R;
 import com.example.mywork.fragment_main.AlarmReceiver;
+import com.example.mywork.fragment_main.CalendarAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -75,6 +78,8 @@ public class FragmentMwToDoList extends Fragment {
     public Database database;
     private ImageButton btnAddWork;
 
+    public static CalendarAdapter calendarAdapter;
+
     private View view;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -87,7 +92,7 @@ public class FragmentMwToDoList extends Fragment {
     private String mParam2;
 
     public FragmentMwToDoList() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -142,7 +147,6 @@ public class FragmentMwToDoList extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyy");
-        MainActivity mainActivity = new MainActivity();
 
         monthYearTV.setText(format.format(calendar.getTime()));
 
@@ -537,6 +541,7 @@ public class FragmentMwToDoList extends Fragment {
 
     @Override
     public void onResume() {
+
         listCategory = new ArrayList<>();
         Cursor dataCategory = database.getdata("SELECT * FROM category");
         listCategory.clear();
@@ -551,6 +556,11 @@ public class FragmentMwToDoList extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, listCategoryString);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(arrayAdapter);
+
+        calendarAdapter = new CalendarAdapter(FragmentMwToDoList.this);
+        if(calendarAdapter.isOnClick) {
+            monthYearTV.setText(calendarAdapter.monthyeartv);
+        }
         super.onResume();
     }
 }

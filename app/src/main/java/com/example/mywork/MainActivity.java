@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerMainAdapter viewPagerMainAdapter;
 
     public MainActivity() {
+
     }
 
     @Override
@@ -281,4 +282,8 @@ public class MainActivity extends AppCompatActivity {
         cancelAlarm();
         super.onStop();
     }
+
+//    public void toToDoList() {
+//        vpMain.setCurrentItem(0);
+//    }
 }

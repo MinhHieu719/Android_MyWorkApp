@@ -10,11 +10,13 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanks.passcodeview.PasscodeView;
 
 public class PassCodeActivity extends AppCompatActivity {
+    TextView tvForgotPassword;
     EditText edtEnterPassword;
     Button btnOkPassword;
     String password;
@@ -28,6 +30,15 @@ public class PassCodeActivity extends AppCompatActivity {
 
         edtEnterPassword = findViewById(R.id.edtEnterPassword);
         btnOkPassword = findViewById(R.id.btnOkPassword);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PassCodeActivity.this, "The function is developing.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+            }
+        });
 
 //        SharedPreferences settings = getSharedPreferences("PREFS", 0);
 //        password = settings.getString("password", "");
