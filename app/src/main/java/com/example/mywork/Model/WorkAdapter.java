@@ -97,16 +97,16 @@ public class WorkAdapter extends BaseAdapter {
         cbWork.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     fragmentMwToDoList.database.querydata("UPDATE work SET status = '1' WHERE id = '" + work.getId() + "'");
-                    if(fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
+                    if (fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
                         fragmentMwToDoList.getAllWorkOther();
                     } else {
                         fragmentMwToDoList.getAllWork();
                     }
                 } else {
                     fragmentMwToDoList.database.querydata("UPDATE work SET status = '0' WHERE id = '" + work.getId() + "'");
-                    if(fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
+                    if (fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
                         fragmentMwToDoList.getAllWorkOther();
                     } else {
                         fragmentMwToDoList.getAllWork();
@@ -138,7 +138,7 @@ public class WorkAdapter extends BaseAdapter {
                 listCategoryUpdate.add("Personal");
                 listCategoryUpdate.add("Study");
                 listCategoryUpdate.add("Work");
-                while(dataCategory.moveToNext()) {
+                while (dataCategory.moveToNext()) {
                     listCategoryUpdate.add(dataCategory.getString(1));
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, listCategoryUpdate);
@@ -156,7 +156,7 @@ public class WorkAdapter extends BaseAdapter {
 //                } else if(listWork.get(position).getCategory().equals("Personal")) {
 //                    spCategoryUpdate.setSelection(2);
 //                } else {
-                    spCategoryUpdate.setSelection(listWork.get(position).getCategoryid());
+                spCategoryUpdate.setSelection(listWork.get(position).getCategoryid());
 //                }
 
                 cbStatusWorkUpdate.setChecked(listWork.get(position).getStatus() != 0);
@@ -187,7 +187,7 @@ public class WorkAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         fragmentMwToDoList.cancelAlarm(work.getId());
-                        if(edtNameWorkUpdate.getText().toString().isEmpty()) {
+                        if (edtNameWorkUpdate.getText().toString().isEmpty()) {
                             Toast.makeText(context, "You need to enter the name!", Toast.LENGTH_SHORT).show();
                         } else {
                             int status;
@@ -196,27 +196,27 @@ public class WorkAdapter extends BaseAdapter {
                             } else {
                                 status = 0;
                             }
-                            fragmentMwToDoList.database.querydata("UPDATE work SET name = '"+ edtNameWorkUpdate.getText()
-                                    +"', status = '" + status + "', description = '"
-                                    + edtDesWorkUpdate.getText() +"', date = '"
+                            fragmentMwToDoList.database.querydata("UPDATE work SET name = '" + edtNameWorkUpdate.getText()
+                                    + "', status = '" + status + "', description = '"
+                                    + edtDesWorkUpdate.getText() + "', date = '"
                                     + fragmentMwToDoList.monthYearTV.getText() + "', time = '"
                                     + edtTimeWorkUpdate.getText() + "', category = '"
                                     + spCategoryUpdate.getSelectedItem() + "', categoryid = '" + spCategoryUpdate.getSelectedItemPosition() + "' WHERE id = '"
-                                    + work.getId() +"'");
-                            if(fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
+                                    + work.getId() + "'");
+                            if (fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
                                 fragmentMwToDoList.getAllWorkOther();
                             } else {
                                 fragmentMwToDoList.getAllWork();
                             }
                             dialog.dismiss();
 
-                            if(edtTimeWorkUpdate.getText().toString().isEmpty()) {
+                            if (edtTimeWorkUpdate.getText().toString().isEmpty()) {
 
                             } else {
 //                                Intent intent = new Intent(getContext(), AlarmReceiver.class);
 //                                intent.putExtra("titleOfWork", edtNameWorkUpdate.getText().toString());
-                                fragmentMwToDoList.cancelAlarm(work.getId());
-                                fragmentMwToDoList.startAlarm(c, edtNameWorkUpdate.getText().toString(), work.getId());
+                                cancelAlarm(work.getId());
+                                startAlarm(c, edtNameWorkUpdate.getText().toString(), work.getId());
 //                                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //                                ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 //                                Intent intent = new Intent(getContext(), AlarmReceiver.class);
@@ -230,7 +230,7 @@ public class WorkAdapter extends BaseAdapter {
                         }
                         Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
 
-                        if(edtTimeWorkUpdate.getText().toString().isEmpty()) {
+                        if (edtTimeWorkUpdate.getText().toString().isEmpty()) {
                             fragmentMwToDoList.cancelAlarm(work.getId());
                         }
                     }
@@ -258,7 +258,7 @@ public class WorkAdapter extends BaseAdapter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         fragmentMwToDoList.database.querydata("DELETE FROM work WHERE id = '" + work.getId() + "'");
-                        if(fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
+                        if (fragmentMwToDoList.spCategory.getSelectedItem().toString().equals("All")) {
                             fragmentMwToDoList.getAllWorkOther();
                         } else {
                             fragmentMwToDoList.getAllWork();
@@ -287,12 +287,12 @@ public class WorkAdapter extends BaseAdapter {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String dateCopy;
-                        if(dayOfMonth < 10 && month+1 >= 10) {
-                            dateCopy = "0" + dayOfMonth + "/" + (month+1) + "/" + year;
-                        } else if(dayOfMonth >= 10 && month+1 < 10) {
-                            dateCopy = dayOfMonth + "/" + "0" + (month+1) + "/" + year;
-                        } else if(dayOfMonth < 10 && month+1 < 10) {
-                            dateCopy = "0" + dayOfMonth + "/" + "0" + (month+1) + "/" + year;
+                        if (dayOfMonth < 10 && month + 1 >= 10) {
+                            dateCopy = "0" + dayOfMonth + "/" + (month + 1) + "/" + year;
+                        } else if (dayOfMonth >= 10 && month + 1 < 10) {
+                            dateCopy = dayOfMonth + "/" + "0" + (month + 1) + "/" + year;
+                        } else if (dayOfMonth < 10 && month + 1 < 10) {
+                            dateCopy = "0" + dayOfMonth + "/" + "0" + (month + 1) + "/" + year;
                         } else {
                             dateCopy = dayOfMonth + "/" + (month + 1) + "/" + year;
                         }
@@ -310,5 +310,30 @@ public class WorkAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    public ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void startAlarm(Calendar c, String titleOfWork, int ID) {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        intentArray = new ArrayList<PendingIntent>();
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        intent.putExtra("titleOfWork", titleOfWork);
+//        intent.putExtra("idOfWork", ID);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ID, intent, 0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                c.getTimeInMillis(),
+                pendingIntent);
+        intentArray.add(pendingIntent);
+    }
+
+    public void cancelAlarm(int ID) {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ID, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        intentArray.remove(pendingIntent);
     }
 }
